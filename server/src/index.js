@@ -4,7 +4,7 @@ const AWS = require('aws-sdk');
 
 // AWS DynamoDB configuration
 AWS.config.update({
-  region: 'your-region', // TODO: Replace with your AWS region
+  region: 'us-east-2',
   // TODO: credentials: ... (Set up credentials securely, e.g., using environment variables or IAM roles)
 });
 
@@ -25,7 +25,7 @@ app.post('/upload', async (req, res) => {
 
   // Define the item to be inserted into DynamoDB
   const params = {
-    TableName: 'YourDynamoDBTableName', // TODO: Replace with your DynamoDB table name
+    TableName: 'MySampleTable',
     Item: {
       id: new Date().getTime().toString(),
       title: title,

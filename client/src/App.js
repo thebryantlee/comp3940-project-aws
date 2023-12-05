@@ -1,7 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
 import React from 'react';
-import MqttComponent from './components/MqttComponent';
 
 function App() {
   return (
@@ -20,11 +19,7 @@ function App() {
           Learn React
         </a>
       </header>
-    </div>),
-    (<div className="App">
-        <MqttComponent/>
-      </div>
-    );
+    </div>);
 }
 
 export default App;

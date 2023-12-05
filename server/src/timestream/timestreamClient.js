@@ -1,22 +1,44 @@
 const AWS = require('aws-sdk');
 
-AWS.config.update({
-    // TODO: configure below
-    region: 'your-region',
-    // credentials: ... (set up credentials securely)
-});
+exports.handler = async (event, context) => {
+    AWS.config.update({
+        accessKeyId: 'AKIA5DWA4I3PMNMHNAE4',
+        secretAccessKey: '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',
+        region: 'us-east-2',
+    });
 
-const writeClient = new AWS.TimestreamWrite({...});
-const queryClient = new AWS.TimestreamQuery({...});
+    // Create a Timestream client
+    const timestream = new AWS.TimestreamQuery();
 
-const writeToTimestream = async (data) => {
-    // TODO: configure below
-    // Implement logic to write data to Timestream
+    // Define query parameters
+    const params = {
+        QueryString: `SELECT
+        truck_id,
+        fleet,
+        fuel_capacity,
+        model,
+        load_capacity,
+        make,
+        measure_name
+    FROM "sampleDB".IoTMulti
+    GROUP BY truck_id, fleet, fuel_capacity, model, load_capacity, make, measure_name`,
+        // Other parameters like client request token, pagination settings, etc., can be included here if needed
+    };
+
+    try {
+        const data = await timestream.query(params).promise();
+        console.log('Query results:', data);
+
+        // Process the query results
+        data.Rows.forEach(row => {
+            const rowData = row.Data;
+            console.log('Row Data:', rowData);
+        });
+
+        return { statusCode: 200, body: JSON.stringify(data) };
+    } catch (error) {
+        console.error('Error querying Timestream:', error);
+        return { statusCode: 500, body: JSON.stringify({ message: 'Error querying Timestream' }) };
+    }
 };
 
-const queryTimestream = async () => {
-    // TODO: configure below
-    // Implement logic to query data from Timestream
-};
-
-module.exports = {writeToTimestream, queryTimestream};

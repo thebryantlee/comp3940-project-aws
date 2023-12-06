@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { queryTimestream } = require('./timestreamClient'); // Update the path accordingly
+const { queryTimestream } = require('./timestreamClient');
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -21,10 +21,10 @@ app.get('/query-timestream', async (req, res) => {
 });
 
 // Serve the React app
-app.use(express.static('client/build')); // Adjust the path based on your project structure
+app.use(express.static('client/build'));
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client/build', 'index.html')); // Adjust the path based on your project structure
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
 
 app.listen(port, () => {

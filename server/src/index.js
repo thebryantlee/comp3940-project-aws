@@ -1,14 +1,13 @@
 const express = require('express');
 const mqttHandler = require('./mqttHandler');
 const mqtt = require('mqtt');
-
 const app = express();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 
 console.log(__dirname);
 
 
-const { handler } = require('./timestream/timestreamClient.js'); // Import the Lambda function from handler.js
+const { handler } = require('../timestreamClient.js'); // Import the Lambda function from handler.js
 
 handler({}, null)
   .then(response => {

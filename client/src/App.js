@@ -1,76 +1,84 @@
-import logo from './logo.svg';
-import './App.css';
 import React, { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'devextreme/dist/css/dx.material.orange.dark.css';
+import './App.css';
+import { DataGrid } from 'devextreme-react';
+import { Container } from 'react-bootstrap';
+import { FilterPanel, HeaderFilter, Summary, TotalItem, ColumnChooser, ColumnChooserSearch, ColumnChooserSelection } from 'devextreme-react/data-grid';
+
 
 function App() {
-  const [file, setFile] = useState(null);
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const [data, setData] = useState([]);
 
-  const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
-  };
 
-  const handleTitleChange = (event) => {
-    setTitle(event.target.value);
-  };
-
-  const handleDescriptionChange = (event) => {
-    setDescription(event.target.value);
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    // Prepare the form data
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('title', title);
-    formData.append('description', description);
-
-    try {
-      // TODO: Replace with your server endpoint
-      const response = await fetch('/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      // Handle the server response
-      if (response.ok) {
-        const responseBody = await response.json();
-        console.log('File uploaded successfully', responseBody);
-      } else {
-        console.error('Server responded with a non-200 status code', response.status);
-      }
-    } catch (error) {
-      console.error('Error submitting form', error);
+  const fetchData = () => {
+    let options = {
+      method: 'GET'
     }
+    fetch('http://localhost:8080/query-timestream', options).then(data => data.json()).catch(console.log).then(setData)
+  }
+
+  const handleButtonClick = () => {
+    fetchData();
   };
+
+  const columns = [
+    {dataField: "truck_id", dataType: "string"},
+    {dataField: "fleet", dataType: "string"},
+    {dataField: "fuel_capacity", dataType: "number"},
+    {dataField: "load_capacity", dataType: "number"},
+    {dataField: "model", dataType: "string"},
+    {dataField: "make", dataType: "string"},
+    {dataField: "measure_name", dataType: "string", visible: false}
+  ]
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            value={title}
-            onChange={handleTitleChange}
-            placeholder="Enter title"
-          />
-          <input
-            value={description}
-            onChange={handleDescriptionChange}
-            placeholder="Enter description"
-          />
-          <input
-            type="file"
-            onChange={handleFileChange}
-          />
-          <button type="submit">Upload</button>
-        </form>
-      </header>
-    </div>
+      <div className="h-100 w-100 app-container">
+        <header className="App-header">
+          <button className="car-button" onClick={handleButtonClick}>
+            🚚 Fetch Data
+          </button>
+        </header>
+        <div className="px-5">
+          <DataGrid
+            dataSource={data}
+            columns={columns}
+            allowColumnReordering={true}
+            allowColumnResizing={true}
+            height={"80vh"}
+            noDataText='Please Fetch Data.'
+          >
+            <HeaderFilter
+              visible={true}
+            />
+            <FilterPanel
+              visible={true}
+            />
+            <Summary>
+              <TotalItem
+                column="truck_id"
+                summaryType="count" />
+              <TotalItem
+                column="fuel_capacity"
+                summaryType="sum" />
+              <TotalItem
+                column="load_capacity"
+                summaryType="sum" />
+            </Summary>
+            <ColumnChooser
+              enabled={true}
+              mode={'dragAndDrop'}
+            >
+
+              <ColumnChooserSelection
+                allowSelectAll={true}
+                selectByClick={true}
+                recursive={true} />
+            </ColumnChooser>
+          </DataGrid>
+        </div>
+      </ div>
   );
 }
-
 
 export default App;

@@ -1,15 +1,24 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'devextreme/dist/css/dx.material.orange.dark.css';
 import './App.css';
-import { DataGrid } from 'devextreme-react';
-import { Container } from 'react-bootstrap';
-import { FilterPanel, HeaderFilter, Summary, TotalItem, ColumnChooser, ColumnChooserSearch, ColumnChooserSelection } from 'devextreme-react/data-grid';
+import {DataGrid} from 'devextreme-react';
+import {Container} from 'react-bootstrap';
+import {
+  FilterPanel,
+  HeaderFilter,
+  Summary,
+  TotalItem,
+  ColumnChooser,
+  ColumnChooserSearch,
+  ColumnChooserSelection
+} from 'devextreme-react/data-grid';
+import Login from './Login'; // Import the Login component
 
 
 function App() {
   const [data, setData] = useState([]);
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
 
   const fetchData = () => {
     let options = {
@@ -32,53 +41,60 @@ function App() {
     {dataField: "measure_name", dataType: "string", visible: false}
   ]
 
-  return (
-      <div className="h-100 w-100 app-container">
-        <header className="App-header">
-          <button className="car-button" onClick={handleButtonClick}>
-            🚚 Fetch Data
-          </button>
-        </header>
-        <div className="px-5">
-          <DataGrid
-            dataSource={data}
-            columns={columns}
-            allowColumnReordering={true}
-            allowColumnResizing={true}
-            height={"80vh"}
-            noDataText='Please Fetch Data.'
-          >
-            <HeaderFilter
-              visible={true}
-            />
-            <FilterPanel
-              visible={true}
-            />
-            <Summary>
-              <TotalItem
-                column="truck_id"
-                summaryType="count" />
-              <TotalItem
-                column="fuel_capacity"
-                summaryType="sum" />
-              <TotalItem
-                column="load_capacity"
-                summaryType="sum" />
-            </Summary>
-            <ColumnChooser
-              enabled={true}
-              mode={'dragAndDrop'}
-            >
+// If the user is not logged in, render the Login component
+  if (!isLoggedIn) {
+    // Pass setIsLoggedIn directly to the Login component
+    return <Login onLoginSuccess={() => setIsLoggedIn(true)}/>;
+  }
 
-              <ColumnChooserSelection
-                allowSelectAll={true}
-                selectByClick={true}
-                recursive={true} />
-            </ColumnChooser>
-          </DataGrid>
-        </div>
-      </ div>
+  return (
+    <div className="h-100 w-100 app-container">
+      <header className="App-header">
+        <button className="car-button" onClick={handleButtonClick}>
+          🚚 Fetch Data
+        </button>
+      </header>
+      <div className="px-5">
+        <DataGrid
+          dataSource={data}
+          columns={columns}
+          allowColumnReordering={true}
+          allowColumnResizing={true}
+          height={"80vh"}
+          noDataText='Please Fetch Data.'
+        >
+          <HeaderFilter
+            visible={true}
+          />
+          <FilterPanel
+            visible={true}
+          />
+          <Summary>
+            <TotalItem
+              column="truck_id"
+              summaryType="count"/>
+            <TotalItem
+              column="fuel_capacity"
+              summaryType="sum"/>
+            <TotalItem
+              column="load_capacity"
+              summaryType="sum"/>
+          </Summary>
+          <ColumnChooser
+            enabled={true}
+            mode={'dragAndDrop'}
+          >
+
+            <ColumnChooserSelection
+              allowSelectAll={true}
+              selectByClick={true}
+              recursive={true}/>
+          </ColumnChooser>
+        </DataGrid>
+      </div>
+    </ div>
   );
+
 }
 
 export default App;

@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@aws-sdk/client-timestream-query": "^3.465.0",
-    "aws-sdk": "^2.1511.0"
+    "amazon-cognito-identity-js": "^6.3.7",
+    "aws-sdk": "^2.1512.0"
   }
 }

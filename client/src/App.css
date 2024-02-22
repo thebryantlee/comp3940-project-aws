@@ -1,5 +1,15 @@
-.App {
-  text-align: center;
+html {
+  min-height: 100%;
+}
+
+body {
+  min-height: 100%;
+
+}
+
+.app-container {
+  min-height: 100vh;
+  background-color: #282c34 !important;
 }
 
 .App-logo {
@@ -14,8 +24,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  min-height: 10vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -35,4 +44,20 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.car-button {
+  font-size: 1.5em;
+  padding: 10px 20px;
+  border: none;
+  background-color: #e74c3c; /* Red color, you can change it */
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  margin: 40px;
+}
+
+.car-button:hover {
+  background-color: white;
+  color: #e74c3c
 }

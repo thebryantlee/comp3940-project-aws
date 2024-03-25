@@ -2,7 +2,7 @@ import {CognitoUserPool, AuthenticationDetails, CognitoUser, CognitoUserAttribut
 
 const poolData = {
   UserPoolId: 'us-west-2_PgylBvXXN',
-  ClientId: '3mo3jpnuqo30jsp1l7vekj52fl' // Your Cognito App Client ID
+  ClientId: '3mo3jpnuqo30jsp1l7vekj52fl'
 };
 
 const userPool = new CognitoUserPool(poolData);
